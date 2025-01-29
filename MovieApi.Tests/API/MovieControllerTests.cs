@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MovieApi.API.Controllers;
 using MovieApi.Domain.DTOs;
@@ -14,7 +15,7 @@ namespace MovieApi.Tests.API
         public MovieControllerTests()
         {
             _mockMovieService = new Mock<IMovieService>();
-            _controller = new MovieController(_mockMovieService.Object);
+            _controller = new MovieController(_mockMovieService.Object, new Mock<ILogger<MovieController>>().Object);
         }
 
         [Fact]
