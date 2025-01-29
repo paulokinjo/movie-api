@@ -1,0 +1,49 @@
+# .github/workflows/dotnet.yml
+
+name: Build and Test .NET Application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0'  # Replace with the version you are using
+
+      - name: Install dependencies
+        run: |
+          cd MovieApi
+          dotnet restore
+
+      - name: Build the project
+        run: |
+          cd MovieApi
+          dotnet build --configuration Release
+
+      - name: Run tests and collect code coverage
+        run: |
+          cd MovieApi
+          dotnet test --configuration Release --collect:"XPlat Code Coverage"
+
+      - name: Publish code coverage results
+        uses: codecov/codecov-action@v3
+        with:
+          file: './MovieApi/TestResults/**/coverage.cobertura.xml'
+
+      - name: Build Docker image
+        run: |
+          cd MovieApi
+          docker build -t movieapi-server .

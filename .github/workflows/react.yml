@@ -1,0 +1,43 @@
+# .github/workflows/react.yml
+name: Build and Test React Application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'  
+
+      - name: Install dependencies
+        run: |
+          cd movie-api-client
+          npm install
+
+      - name: Run tests and collect code coverage
+        run: |
+          cd movie-api-client
+          npm test -- --coverage --ci --silent
+
+      - name: Publish code coverage results
+        uses: codecov/codecov-action@v3
+        with:
+          file: './movie-api-client/coverage/lcov-report/index.html'  # Adjust path if necessary
+
+      - name: Build Docker image
+        run: |
+          cd movie-api-client
+          docker build -t movie-api-client .

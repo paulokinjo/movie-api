@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "ESNext", // Set the JavaScript target version
+        "module": "ESNext", // Use ESNext modules to support import/export
+        "moduleResolution": "node", // Standard node resolution strategy
+        "jsx": "react-jsx", // Use the new JSX transform (for React 17+)
+        "esModuleInterop": true, // Allow default imports from CommonJS modules
+        "skipLibCheck": true, // Skip library checks for faster builds
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": [
+        "src/**/*"
+, "jest.config.ts", "babel.config.js", "tsconfig.json"    ]
+}
